@@ -10,18 +10,30 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * * Service class to carry out any business logic on objects between endpoint and database
+ * */
 @Service
 @Transactional
 public class IssueService {
 
-        private final IssueRepository issueRepository;
-        private static final Logger logger = LoggerFactory.getLogger(IssueService.class);
 
-        public IssueService(IssueRepository issueRepository) {
-            this.issueRepository = issueRepository;
-        }
+    /**
+     * Constructor and configuration of class
+     */
+    private final IssueRepository issueRepository;
+    private static final Logger logger = LoggerFactory.getLogger(IssueService.class);
 
-        public int addIssue(Issue issue) {
+    public IssueService(IssueRepository issueRepository) {
+        this.issueRepository = issueRepository;
+    }
+
+    /**
+     * Creates a new issue in the database, including breaking down the passed in Issue to it's attributes
+     * @param issue - The new issue to be stored
+     * @return - Confirmation that the request was successful
+     */
+    public int addIssue(Issue issue) {
             return issueRepository.addIssue(
                     issue.getIssueCategory(),
                     issue.getLocation(),
@@ -31,7 +43,12 @@ public class IssueService {
             );
         }
 
-        public int updateIssue(Issue issue) {
+    /**
+     * Updates an issue by replacing the content with the Issue provided
+     * @param issue - To replace the current data
+     * @return - Confirmation that the request was successful
+     */
+    public int updateIssue(Issue issue) {
             return issueRepository.updateIssue(
                     issue.getIssueCategory(),
                     issue.getLocation(),
@@ -44,12 +61,21 @@ public class IssueService {
             );
         }
 
-        public ArrayList<Issue> getAllIssues() {
-            return issueRepository.getAllIssues();
-        }
+    /**
+     * Gets all issues stored
+     * @return - An Array of Issues
+     */
+    public ArrayList<Issue> getAllIssues() {
+        return issueRepository.getAllIssues();
+    }
 
-        public Issue getIssueById(Long id) {
-            return issueRepository.getIssueById(id);
-        }
+    /**
+     * Gets a specific issue by its ID
+     * @param id - ID of the requested issue
+     * @return - A single Issue
+     */
+    public Issue getIssueById(Long id) {
+        return issueRepository.getIssueById(id);
+    }
 
 }
