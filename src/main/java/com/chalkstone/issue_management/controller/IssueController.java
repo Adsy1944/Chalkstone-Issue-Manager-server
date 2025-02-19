@@ -29,7 +29,7 @@ public class IssueController {
      * Gets all the issues stored in the database
      * @return - All Issues
      */
-    @RequestMapping(path="/getAllIssues", method=RequestMethod.GET)
+    @GetMapping(path="/getAllIssues")
     public ResponseEntity<?> getAllIssues() {
         try {
             logger.info("Get all issues");
@@ -46,7 +46,7 @@ public class IssueController {
      * @param id - ID of the Issue
      * @return - The requested Issue
      */
-    @RequestMapping(path="/getIssueById/{id}", method=RequestMethod.GET)
+    @GetMapping(path="/getIssueById/{id}")
     public ResponseEntity<?> getIssueById(@PathVariable("id") Long id) {
         try {
             logger.info("Get issue by ID: {}", id);
@@ -63,7 +63,7 @@ public class IssueController {
      * @param issue - The new issue to be stored
      * @return - Confirmation that the request was successful
      */
-    @RequestMapping(path="/createIssue", method=RequestMethod.POST)
+    @PostMapping(path="/createIssue")
     public ResponseEntity<?> createIssue(@RequestBody Issue issue) {
         try {
             logger.info("Creating issue:\n{}", issue);
@@ -85,7 +85,7 @@ public class IssueController {
      * @param issue - The new issue update
      * @return - Confrimation that the request was successful
      */
-    @RequestMapping(path="/updateIssue", method=RequestMethod.PUT)
+    @PutMapping(path="/updateIssue")
     public ResponseEntity<?> updateIssue(@RequestBody Issue issue) {
         try {
             logger.info("Updating issue: {}", issue.getId());
@@ -100,5 +100,7 @@ public class IssueController {
         }
         return ResponseEntity.badRequest().body("Failed to update issue");
     }
+
+
 
 }

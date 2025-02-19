@@ -74,4 +74,11 @@ public class IssueService {
         return issueRepository.getIssueById(id);
     }
 
+    /**
+     * Deletes a specific issue by its ID
+     * @param id
+     * @return - Confirmation that the deletion was successful
+     */
+    public int deleteIssueById(Long id) { return issueRepository.deleteIssue(id); }
+
 }

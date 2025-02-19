@@ -32,4 +32,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Modifying
     @Query(value = "UPDATE employee SET name = :name, role = :role WHERE id = :id", nativeQuery = true)
     int updateEmployee(@Param("name") String name, @Param("role") String role, @Param("id") Long id);
+
+    @Modifying
+    @Query(value = "DELETE FROM employee WHERE id = :id", nativeQuery = true)
+    int deleteEmployee(@Param("id") Long id);
 }

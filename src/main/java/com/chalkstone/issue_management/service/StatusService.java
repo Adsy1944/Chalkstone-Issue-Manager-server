@@ -40,4 +40,16 @@ public class StatusService {
     public Status getStatusById(Long id) {
         return statusRepository.getStatusById(id);
     }
+
+    public int updateStatus(Status status) {
+        return statusRepository.updateStatus(status.getStatus(), status.getId());
+    }
+
+    public int deleteStatus(Long id) {
+        return statusRepository.deleteStatus(id);
+    }
+
+    public int addStatus(Status status) {
+        return statusRepository.addStatus(status.getStatus());
+    }
 }
