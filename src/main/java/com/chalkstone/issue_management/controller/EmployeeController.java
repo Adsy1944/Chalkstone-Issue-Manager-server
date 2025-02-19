@@ -82,4 +82,18 @@ public class EmployeeController {
         }
     }
 
+    @DeleteMapping(path="/deleteEmployee/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") Long id) {
+        try {
+            logger.info("Deleting employee: {}", id);
+            if (employeeService.deleteEmployee(id) == 1) {
+                return ResponseEntity.ok().body("Employee deleted successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Could not delete employee");
+            }
+        } catch(Exception e) {
+            logger.error("Could not delete employee {}", id);
+            return ResponseEntity.badRequest().body("Could not delete employee");
+        }
+    }
 }

@@ -36,5 +36,9 @@ public class EmployeeService {
         return employeeRepository.updateEmployee(employee.getName(), employee.getRole(), employee.getId());
     }
 
+    public int deleteEmployee(Long id) {
+        return employeeRepository.deleteEmployee(id);
+    }
+
 
 }

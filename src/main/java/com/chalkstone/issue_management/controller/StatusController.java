@@ -6,9 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -27,7 +25,7 @@ public class StatusController {
         this.statusService = statusService;
     }
 
-    @RequestMapping(path="/getAllStatuses")
+    @GetMapping(path="/getAllStatuses")
     public ResponseEntity<?> getAllStatuses() {
         try {
             logger.info("Getting all statuses");
@@ -39,7 +37,7 @@ public class StatusController {
         return ResponseEntity.badRequest().body("Could not retrieve statuses");
     }
 
-    @RequestMapping(path="/getStatusById/{id}")
+    @GetMapping(path="/getStatusById/{id}")
     public ResponseEntity<?> getStatusById(@PathVariable("id") Long id) {
         try {
             logger.info("Getting status: {}", id);
@@ -49,6 +47,47 @@ public class StatusController {
             logger.error("Could not retrieve status\n{}", e.getMessage());
         }
         return ResponseEntity.badRequest().body("Could not retrieve status");
+    }
+
+    @PostMapping(path="/addStatus")
+    public ResponseEntity<?> addStatus(@RequestBody Status status) {
+        try {
+            logger.info("Adding status {}", status.getStatus());
+            if (statusService.addStatus(status) == 1) {
+                return ResponseEntity.ok().body("Status added successfully");
+            } else {
+                logger.info("Could not add status: {}", status.getStatus());
+                return ResponseEntity.badRequest().body("Could not add status");
+            }
+        } catch(Exception e) {
+            logger.error("Could not add status\n{}", e.getMessage());
+            return ResponseEntity.badRequest().body("Could not add status");
+        }
+    }
+
+    @PutMapping(path="/updateStatus")
+    public ResponseEntity<?> updateStatus(@RequestBody Status status) {
+        try {
+            logger.info("Updating status: {}", status);
+            if (statusService.updateStatus(status) == 1) {
+                return ResponseEntity.ok().body("Status updated succesfully");
+            }
+        } catch(Exception e) {
+            logger.error("Could not update status:\n{}", e.getMessage());
+        }
+        return ResponseEntity.badRequest().body("Failed to update status");
+    }
+
+    @DeleteMapping(path="/deleteStatus/{id}")
+    public ResponseEntity<?> deleteStatus(@PathVariable("id") Long id) {
+        try {
+            if (statusService.deleteStatus(id) == 1) {
+                return ResponseEntity.ok().body("Status deleted successfully");
+            }
+        } catch(Exception e) {
+            logger.error("Could not delete status:\n{}", e.getMessage());
+        }
+        return ResponseEntity.badRequest().body("Could not delete status");
     }
 
 }
