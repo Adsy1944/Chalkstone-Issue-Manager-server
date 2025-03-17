@@ -6,6 +6,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * * Service class to carry out any business logic on objects between endpoint and database
@@ -20,20 +22,20 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.getEmployeeById(id);
+    public Optional<Employee> getEmployeeById(Long id) {
+        return employeeRepository.findById(id);
     }
 
-    public ArrayList<Employee> getAllEmployees() {
-        return employeeRepository.getAllEmployees();
+    public List<Employee> getAllEmployees() {
+        return employeeRepository.findAll();
     }
 
-    public int addEmployee(Employee employee) {
-        return employeeRepository.addEmployee(employee.getName(), employee.getRole());
+    public Employee addEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     public int updateEmployee(Employee employee) {
-        return employeeRepository.updateEmployee(employee.getName(), employee.getRole(), employee.getId());
+        return employeeRepository.updateEmployee(employee.getFirstName(), employee.getLastName(), employee.getRole(), employee.getId());
     }
 
     public int deleteEmployee(Long id) {

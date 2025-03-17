@@ -7,33 +7,39 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
+
     /**
-     * Gets all the Employees in the database
-     * @return - List of Employees
+     * Saves a new employee
+     * @param employee must not be {@literal null}.
+     * @return
      */
-    @Query(value = "SELECT * FROM employee", nativeQuery = true)
-    ArrayList<Employee> getAllEmployees();
+    Employee save(Employee employee);
 
     /**
      * Gets a single Employee from their ID
      * @param id
      * @return - A single Employee
      */
-    @Query(value = "SELECT * FROM employee WHERE id = :id", nativeQuery = true)
-    Employee getEmployeeById(@Param("id") Long id);
+    Optional<Employee> findById(Long id);
+
+    /**
+     * Gets all Employees
+     * @return
+     */
+    List<Employee> findAll();
 
     @Modifying
-    @Query(value = "INSERT INTO employee (name, role) VALUES (:name, :role)", nativeQuery = true)
-    int addEmployee(@Param("name") String name, @Param("role") String role);
-
-    @Modifying
-    @Query(value = "UPDATE employee SET name = :name, role = :role WHERE id = :id", nativeQuery = true)
-    int updateEmployee(@Param("name") String name, @Param("role") String role, @Param("id") Long id);
+    @Query(value = "UPDATE employee SET firstName = :firstName, lastName = :lastName, role = :role WHERE id = :id", nativeQuery = true)
+    int updateEmployee(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("role") String role, @Param("id") Long id);
 
     @Modifying
     @Query(value = "DELETE FROM employee WHERE id = :id", nativeQuery = true)
     int deleteEmployee(@Param("id") Long id);
+
+
 }
