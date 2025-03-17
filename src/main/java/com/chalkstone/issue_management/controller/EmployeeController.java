@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Controller class to provide an endpoint for the UI to make requests
@@ -28,14 +30,14 @@ public class EmployeeController {
     }
 
     @GetMapping(path="/getEmployeeById/{id}")
-    public ResponseEntity<?> getEmployeeById(@PathVariable("id") Long id) {
+    public ResponseEntity<Optional<Employee>> getEmployeeById(@PathVariable("id") Long id) {
         try {
             logger.info("Getting employee by id: {}", id);
-            Employee response = employeeService.getEmployeeById(id);
+            Optional<Employee> response = employeeService.getEmployeeById(id);
             return ResponseEntity.ok().body(response);
         } catch(Exception e) {
             logger.error("Could not get employee\n{}", e.getMessage());
-            return ResponseEntity.badRequest().body("Could not get employee");
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
@@ -43,7 +45,7 @@ public class EmployeeController {
     public ResponseEntity<?> getAllEmployees() {
         try {
             logger.info("Get all employees");
-            ArrayList<Employee> response = employeeService.getAllEmployees();
+            List<Employee> response = employeeService.getAllEmployees();
             return ResponseEntity.ok().body(response);
         } catch(Exception e) {
             logger.error("Could not get all employees\n{}", e.getMessage());
@@ -52,18 +54,19 @@ public class EmployeeController {
     }
 
     @PostMapping(path="/addEmployee")
-    public ResponseEntity<?> addEmployee(@RequestBody Employee employee) {
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
         try {
             String json = mapper.writeValueAsString(employee);
             logger.info("Adding employee:\n{}", json);
-            if (employeeService.addEmployee(employee) == 1) {
+            Employee response = employeeService.addEmployee(employee);
+            if (response != null) {
                 return ResponseEntity.ok().body(employee);
             } else {
-                return ResponseEntity.badRequest().body("Could not add employee");
+                return ResponseEntity.badRequest().body(null);
             }
         } catch(Exception e) {
             logger.error("Could not add employee\n{}", e.getMessage());
-            return ResponseEntity.badRequest().body("Could not add employee");
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

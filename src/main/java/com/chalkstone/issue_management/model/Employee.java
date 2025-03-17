@@ -1,38 +1,63 @@
 package com.chalkstone.issue_management.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "employee")
 public class Employee {
-
     @Id
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "role")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String firstName;
+    private String lastName;
     private String role;
 
-    public Long getId() {
+    public Employee(){}
+
+    /**
+     * Constructor
+     * @param id
+     * @param firstName
+     * @param lastName
+     * @param role
+     */
+    public Employee(long id, String firstName, String lastName, String role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+    }
+
+
+
+    // Getters and setters
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getRole() {
@@ -43,3 +68,4 @@ public class Employee {
         this.role = role;
     }
 }
+
