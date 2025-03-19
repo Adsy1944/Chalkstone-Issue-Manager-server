@@ -15,39 +15,22 @@ import java.util.List;
  */
 public interface IssueRepository extends JpaRepository<Issue, Long> {
 
-    /**
-     * Create a new issue in the database from the passed in attributes
-     * @param issueCategory
-     * @param location
-     * @param description
-     * @param customerName
-     * @param customerEmail
-     * @return - Confirmation of a successful insert
-     */
-    @Modifying
-    @Query(value="INSERT INTO issue (issueCategory, location, reportedDate, description, status, customerName, customerEmail)" +
-            " VALUES (:issueCategory, :location, GETDATE(), :description, 'pending', :customerName, :customerEmail);", nativeQuery = true)
-    int addIssue(@Param("issueCategory") Long issueCategory, @Param("location") String location, @Param("description") String description,
-                 @Param("customerName") String customerName, @Param("customerEmail") String customerEmail);
+//    /**
+//     * Create a new issue in the database from the passed in attributes
+//     * @param issueCategory
+//     * @param location
+//     * @param description
+//     * @param customerName
+//     * @param customerEmail
+//     * @return - Confirmation of a successful insert
+//     */
+//    @Modifying
+//    @Query(value="INSERT INTO issue (issueCategory, location, reportedDate, description, status, customerName, customerEmail)" +
+//            " VALUES (:issueCategory, :location, GETDATE(), :description, 'pending', :customerName, :customerEmail);", nativeQuery = true)
+//    int addIssue(@Param("issueCategory") Long issueCategory, @Param("location") String location, @Param("description") String description,
+//                 @Param("customerName") String customerName, @Param("customerEmail") String customerEmail);
 
-    /**
-     * Updates an existing issue with the passed in attributes
-     * @param issueCategory
-     * @param location
-     * @param reportedDate
-     * @param description
-     * @param status
-     * @param resolvedDate
-     * @param closedBy
-     * @param id
-     * @return - Confirmation of a successful update
-     */
-    @Modifying
-    @Query(value="UPDATE issue SET issueCategory = :issueCategory, location = :location, reportedDate = :reportedDate, " +
-            "description = :description, status = :status, resolvedDate = :resolvedDate, closedBy = :closedBy WHERE id = :id", nativeQuery = true)
-    int updateIssue(@Param("issueCategory") Long issueCategory, @Param("location") String location,
-                    @Param("reportedDate") Date reportedDate, @Param("description") String description, @Param("status") Long status,
-                    @Param("resolvedDate") Date resolvedDate, @Param("closedBy") Long closedBy, @Param("id") Long id);
+    Issue save(Issue issue);
 
     /**
      * Deletes an Issue from the database chosen by ID (should not be required)
@@ -63,7 +46,7 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
      * @return - ArrayList of Issues
      */
     @Query(value="SELECT * FROM issue", nativeQuery = true)
-    ArrayList<Issue> getAllIssues();
+    List<Issue> getAllIssues();
 
     /**
      * Gets a single issue based on its ID
@@ -78,8 +61,10 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 //    @Query(value="UPDATE issue SET closedBy = :closedBy, status = :status WHERE id = :id", nativeQuery = true)
 //    int updateIssueStatus(@Param("closedBy") Long closedBy, @Param("status") Long status, @Param("id") Long id);
 
-
     @Query(value="SELECT * FROM issue WHERE status = 1", nativeQuery = true)
     ArrayList<Issue> getTriageIssues();
+
+//    @Query(value="SELECT * FROM issue WHERE location = :location OR customer_email = :email", nativeQuery = true)
+//    List<Issue> findIssuesByEmailOrLocation(@Param("email") String email, @Param("location") String location);
 
 }

@@ -2,6 +2,7 @@ package com.chalkstone.issue_management.controller;
 
 import com.chalkstone.issue_management.model.Issue;
 import com.chalkstone.issue_management.service.IssueService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Controller class to provide an endpoint for the UI to make requests
@@ -33,7 +36,7 @@ public class IssueController {
     public ResponseEntity<?> getAllIssues() {
         try {
             logger.info("Get all issues");
-            ArrayList<Issue> issues = issueService.getAllIssues();
+            List<Issue> issues = issueService.getAllIssues();
             return ResponseEntity.ok().body(issues);
         } catch(Exception e) {
             logger.error("Failed to retrieve all issues\n{}", e.getMessage());
@@ -50,7 +53,7 @@ public class IssueController {
     public ResponseEntity<?> getIssueById(@PathVariable("id") Long id) {
         try {
             logger.info("Get issue by ID: {}", id);
-            Issue issue = issueService.getIssueById(id);
+            Optional<Issue> issue = issueService.getIssueById(id);
             return ResponseEntity.ok().body(issue);
         } catch(Exception e) {
             logger.error("Failed to retrieve issue\n{}", e.getMessage());
@@ -67,9 +70,9 @@ public class IssueController {
     public ResponseEntity<?> createIssue(@RequestBody Issue issue) {
         try {
             logger.info("Creating issue:\n{}", issue);
-            int result = issueService.addIssue(issue);
-            if (result == 1) {
-                return ResponseEntity.ok().body("Issue created Successfully");
+            Issue result = issueService.addIssue(issue);
+            if (result != null) {
+                return ResponseEntity.ok().body(result);
             }
             else {
                 throw new Exception("Failed to create issue");
@@ -89,18 +92,28 @@ public class IssueController {
     public ResponseEntity<?> updateIssue(@RequestBody Issue issue) {
         try {
             logger.info("Updating issue: {}", issue.getId());
-            int result = issueService.updateIssue(issue);
-            if (result == 1) {
-                return ResponseEntity.ok().body("Issue updated successfully");
-            } else {
-                throw new Exception("Failed to update issue");
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                String json = mapper.writeValueAsString(issue);
+                logger.info("issue to udpate:\n{}", json);
+            } catch(Exception e) {
+                logger.error("Could not parse JSON");
+                logger.warn(e.getMessage());
             }
+            Issue result = issueService.updateIssue(issue);
+
+                return ResponseEntity.ok().body("Issue updated successfully");
+//            } else {
+//                throw new Exception("Failed to update issue");
+
         } catch(Exception e) {
             logger.error("Failed to update Issue: {}", issue.getId().toString());
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body("Failed to update issue");
         }
-        return ResponseEntity.badRequest().body("Failed to update issue");
-    }
 
+    }
+    
     @GetMapping(path="/getTriageIssues")
     public ResponseEntity<?> getTriageIssues() {
         try {
@@ -113,7 +126,17 @@ public class IssueController {
         }
         return ResponseEntity.badRequest().body("Failed to retrieve triage issues");
     }
-
-
-
+    
+//    @GetMapping(path="/findIssuesByEmailOrLocation")
+//    public ResponseEntity<?> findIssuesByEmailOrLocation(@RequestParam(name="email", required=false) String email, @RequestParam(name="location", required=false) String location) {
+//        try {
+//            logger.info("Trying to find issues relating to Email: {} and Location: {}", email, location);
+//            List<Issue> result = issueService.findIssuesByEmailOrLocation(email, location);
+//            return ResponseEntity.ok().body(result);
+//        } catch(Exception e) {
+//            logger.error("Could not find results: {}", e.getMessage());
+//            return ResponseEntity.badRequest().body("Could not find results");
+//        }
+//    }
+    
 }

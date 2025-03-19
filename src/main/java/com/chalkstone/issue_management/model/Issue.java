@@ -1,44 +1,62 @@
 package com.chalkstone.issue_management.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Date;
 
 @Entity
-@Table(name = "issue")
 public class Issue {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "issueCategory")
+//    @Column(name = "issueCategory")
     private Long issueCategory;
 
-    @Column(name = "location")
+//    @Column(name = "location")
     private String location;
 
-    @Column(name = "reportedDate")
+//    @Column(name = "reportedDate")
     private Date reportedDate;
 
-    @Column(name = "description")
+//    @Column(name = "description")
     private String description;
 
-    @Column(name = "status")
-    private long status;
+//    @Column(name = "status")
+    private Long status;
 
-    @Column(name = "resolvedDate")
+//    @Column(name = "resolvedDate")
     private Date resolvedDate;
 
-    @Column(name = "closedBy")
+//    @JsonIgnore
+//    @Column(name = "closedBy")
     private Long closedBy;
 
-    @Column(name = "customerName")
+//    @Column(name = "customerName")
     private String customerName;
 
-    @Column(name = "customerEmail")
+//    @Column(name = "customerEmail")
     private String customerEmail;
+
+    public Issue(){}
+    
+    public Issue(Long id, Long issueCategory, String location, Date reportedDate, String description, Long status, Date resolvedDate, Long closedBy, String customerName, String customerEmail) {
+        this.id = id;
+        this.issueCategory = issueCategory;
+        this.location = location;
+        this.reportedDate = reportedDate;
+        this.description = description;
+        this.status = status;
+        this.resolvedDate = resolvedDate;
+        this.closedBy = closedBy;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+    }
+
+    public Issue(Long l, Long l1, String s, java.util.Date date, String pothole, Long l2, Object o, String obiwanKenobi, String s1) {
+    }
 
     public Long getId() {
         return id;
@@ -80,11 +98,11 @@ public class Issue {
         this.description = description;
     }
 
-    public long getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(long status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 

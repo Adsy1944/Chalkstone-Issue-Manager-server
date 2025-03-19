@@ -5,7 +5,11 @@ import com.chalkstone.issue_management.repository.IssueRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * * Service class to carry out any business logic on objects between endpoint and database
@@ -29,14 +33,11 @@ public class IssueService {
      * @param issue - The new issue to be stored
      * @return - Confirmation that the request was successful
      */
-    public int addIssue(Issue issue) {
-            return issueRepository.addIssue(
-                    issue.getIssueCategory(),
-                    issue.getLocation(),
-                    issue.getDescription(),
-                    issue.getCustomerName(),
-                    issue.getCustomerEmail()
-            );
+    public Issue addIssue(Issue issue) {
+        LocalDate localDate = LocalDate.now();
+            issue.setStatus(1L);
+            issue.setReportedDate(Date.valueOf(localDate));
+            return issueRepository.save(issue);
         }
 
     /**
@@ -44,34 +45,26 @@ public class IssueService {
      * @param issue - To replace the current data
      * @return - Confirmation that the request was successful
      */
-    public int updateIssue(Issue issue) {
-            return issueRepository.updateIssue(
-                    issue.getIssueCategory(),
-                    issue.getLocation(),
-                    issue.getReportedDate(),
-                    issue.getDescription(),
-                    issue.getStatus(),
-                    issue.getResolvedDate(),
-                    issue.getClosedBy(),
-                    issue.getId()
-            );
+    public Issue updateIssue(Issue issue) {
+            return issueRepository.save(issue);
         }
 
     /**
      * Gets all issues stored
      * @return - An Array of Issues
      */
-    public ArrayList<Issue> getAllIssues() {
+    public List<Issue> getAllIssues() {
         return issueRepository.getAllIssues();
     }
 
     /**
      * Gets a specific issue by its ID
+     *
      * @param id - ID of the requested issue
      * @return - A single Issue
      */
-    public Issue getIssueById(Long id) {
-        return issueRepository.getIssueById(id);
+    public Optional<Issue> getIssueById(Long id) {
+        return issueRepository.findById(id);
     }
 
     /**
@@ -81,8 +74,13 @@ public class IssueService {
      */
     public int deleteIssueById(Long id) { return issueRepository.deleteIssue(id); }
 
+
     public ArrayList<Issue> getTriageIssues() {
         return issueRepository.getTriageIssues();
     }
 
+//    public List<Issue> findIssuesByEmailOrLocation(String email, String location) {
+//        return issueRepository.findIssuesByEmailOrLocation(email, location);
+//    }
+    
 }
