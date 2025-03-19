@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Repository to connect and store/retrieve data from Issue table in database
@@ -76,5 +77,9 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
 //    @Modifying
 //    @Query(value="UPDATE issue SET closedBy = :closedBy, status = :status WHERE id = :id", nativeQuery = true)
 //    int updateIssueStatus(@Param("closedBy") Long closedBy, @Param("status") Long status, @Param("id") Long id);
+
+
+    @Query(value="SELECT * FROM issue WHERE status = 1", nativeQuery = true)
+    ArrayList<Issue> getTriageIssues();
 
 }

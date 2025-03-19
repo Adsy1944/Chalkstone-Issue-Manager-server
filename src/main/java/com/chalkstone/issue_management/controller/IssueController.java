@@ -101,6 +101,19 @@ public class IssueController {
         return ResponseEntity.badRequest().body("Failed to update issue");
     }
 
+    @GetMapping(path="/getTriageIssues")
+    public ResponseEntity<?> getTriageIssues() {
+        try {
+            logger.info("Getting Triage Issues");
+            ArrayList<Issue> result = issueService.getTriageIssues();
+            return ResponseEntity.ok().body(result);
+        } catch(Exception e) {
+            logger.error("Failed to retrieve triage issues");
+            logger.warn(e.getMessage());
+        }
+        return ResponseEntity.badRequest().body("Failed to retrieve triage issues");
+    }
+
 
 
 }

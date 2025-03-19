@@ -81,4 +81,8 @@ public class IssueService {
      */
     public int deleteIssueById(Long id) { return issueRepository.deleteIssue(id); }
 
+    public ArrayList<Issue> getTriageIssues() {
+        return issueRepository.getTriageIssues();
+    }
+
 }
