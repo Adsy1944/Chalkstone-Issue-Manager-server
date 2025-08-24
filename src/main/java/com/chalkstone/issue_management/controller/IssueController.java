@@ -126,17 +126,31 @@ public class IssueController {
         }
         return ResponseEntity.badRequest().body("Failed to retrieve triage issues");
     }
+
+    @GetMapping(path="/getNonTriageIssues")
+    public ResponseEntity<?> getNonTriageIssues() {
+        try {
+            logger.info("Getting non Triage Issues");
+            ArrayList<Issue> result = issueService.getNonTriageIssues();
+            return ResponseEntity.ok().body(result);
+        } catch(Exception e) {
+            logger.error("Failed to retrieve non triage issues");
+            logger.warn(e.getMessage());
+        }
+        return ResponseEntity.badRequest().body("Failed to retrieve non triage issues");
+
+    }
     
-//    @GetMapping(path="/findIssuesByEmailOrLocation")
-//    public ResponseEntity<?> findIssuesByEmailOrLocation(@RequestParam(name="email", required=false) String email, @RequestParam(name="location", required=false) String location) {
-//        try {
-//            logger.info("Trying to find issues relating to Email: {} and Location: {}", email, location);
-//            List<Issue> result = issueService.findIssuesByEmailOrLocation(email, location);
-//            return ResponseEntity.ok().body(result);
-//        } catch(Exception e) {
-//            logger.error("Could not find results: {}", e.getMessage());
-//            return ResponseEntity.badRequest().body("Could not find results");
-//        }
-//    }
+    @GetMapping(path="/findIssuesByEmailOrLocation")
+    public ResponseEntity<?> findIssuesByEmailOrLocation(@RequestParam(name="email", required=false) String email, @RequestParam(name="location", required=false) String location) {
+        try {
+            logger.info("Trying to find issues relating to Email: {} and Location: {}", email, location);
+            List<Issue> result = issueService.findIssuesByEmailOrLocation(email, location);
+            return ResponseEntity.ok().body(result);
+        } catch(Exception e) {
+            logger.error("Could not find results: {}", e.getMessage());
+            return ResponseEntity.badRequest().body("Could not find results");
+        }
+    }
     
 }

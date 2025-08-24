@@ -79,8 +79,12 @@ public class IssueService {
         return issueRepository.getTriageIssues();
     }
 
-//    public List<Issue> findIssuesByEmailOrLocation(String email, String location) {
-//        return issueRepository.findIssuesByEmailOrLocation(email, location);
-//    }
-    
+    public ArrayList<Issue> getNonTriageIssues() {
+        return issueRepository.getNonTriageIssues();
+    }
+
+    public List<Issue> findIssuesByEmailOrLocation(String email, String location) {
+        return issueRepository.findIssuesByEmailOrLocation(email, location);
+    }
+
 }

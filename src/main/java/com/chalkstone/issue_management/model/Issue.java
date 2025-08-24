@@ -11,33 +11,14 @@ public class Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @Column(name = "issueCategory")
     private Long issueCategory;
-
-//    @Column(name = "location")
     private String location;
-
-//    @Column(name = "reportedDate")
     private Date reportedDate;
-
-//    @Column(name = "description")
     private String description;
-
-//    @Column(name = "status")
     private Long status;
-
-//    @Column(name = "resolvedDate")
     private Date resolvedDate;
-
-//    @JsonIgnore
-//    @Column(name = "closedBy")
     private Long closedBy;
-
-//    @Column(name = "customerName")
     private String customerName;
-
-//    @Column(name = "customerEmail")
     private String customerEmail;
 
     public Issue(){}

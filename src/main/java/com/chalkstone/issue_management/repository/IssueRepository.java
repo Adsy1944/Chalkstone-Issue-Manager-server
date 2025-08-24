@@ -64,7 +64,10 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     @Query(value="SELECT * FROM issue WHERE status = 1", nativeQuery = true)
     ArrayList<Issue> getTriageIssues();
 
-//    @Query(value="SELECT * FROM issue WHERE location = :location OR customer_email = :email", nativeQuery = true)
-//    List<Issue> findIssuesByEmailOrLocation(@Param("email") String email, @Param("location") String location);
+    @Query(value="SELECT * FROM issue WHERE status != 1", nativeQuery = true)
+    ArrayList<Issue> getNonTriageIssues();
+
+    @Query(value="SELECT * FROM issue WHERE location = :location OR customer_email = :email", nativeQuery = true)
+    List<Issue> findIssuesByEmailOrLocation(@Param("email") String email, @Param("location") String location);
 
 }
